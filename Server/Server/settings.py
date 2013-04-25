@@ -111,9 +111,7 @@ ROOT_URLCONF = 'Server.urls'
 WSGI_APPLICATION = 'Server.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates', # Change this to your own directory.
 )
 
 INSTALLED_APPS = (

@@ -21,3 +21,10 @@ class Choice(models.Model):
 
     def __unicode__(self):
         return self.choice
+
+class Menu(models.Model):
+    text = models.CharField(max_length=300)
+    itemId = models.IntegerField()
+
+    def __unicode(self):
+        return self.text

@@ -1,5 +1,6 @@
 from dataManager.models import Poll
 from dataManager.models import Choice
+from dataManager.models import Menu
 from django.contrib import admin
 
 class ChoiceInline(admin.TabularInline):

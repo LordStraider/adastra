@@ -6,37 +6,17 @@ from dataManager.models import Choice, Poll, Menu
 from django.utils import simplejson
 from django.core.context_processors import csrf
 
-def api_response(request):
-    try:
-        data=json.loads(request.raw_post_data)
-        label=data['label']
-        url=data['url']
-        print label, url
-    except:
-        print 'nope'
-    return HttpResponse('')
-
-def test_ajax(request):
-    if request.is_ajax():
-        message = "Yes, AJAX!"
-    else:
-        message = "Not Ajax"
-    return HttpResponse(message)
-    #alternative test: return render_to_response('test_results.html')
 
 def index(request):
-    print 'Hello from index'
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
     return render_to_response('polls/index.html', {'latest_poll_list': latest_poll_list})
 
 def detail(request, poll_id):
-    print 'Hello from detail'
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('polls/detail.html', {'poll': p},
                                context_instance=RequestContext(request))
 
 def vote(request, poll_id):
-    print 'Hello from vote'
     p = get_object_or_404(Poll, pk=poll_id)
     try:
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
@@ -55,16 +35,20 @@ def vote(request, poll_id):
         return HttpResponseRedirect(reverse('poll_results', args=(p.id,)))
 
 def results(request, poll_id):
-    print 'Hello from results'
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('polls/results.html', {'poll': p})
 
 def menu(request):
     if request.is_ajax():
-        message = "Yes, AJAX!"
-    else:
-        message = "Not Ajax"
-    return HttpResponse(message)
-    print 'Hello from menu'
-    if request.is_ajax():
-        return render_to_response(json.dumps({'message' : 'awesome'}), RequestContext(request))
+        string = '['
+        for item in Menu.objects.all():
+            string +=  '{"menu": "'
+            string += item.text
+            string += '"}, '
+        string.pop()
+        string += ']'
+        print string
+        line = '[ {"TEST1":45,"TEST2":23,"TEST3":"DATA1"}, {"TEST1":46,"TEST2":24,"TEST3":"DATA2"}, {"TEST1":47,"TEST2":25,"TEST3":"DATA3"}]'
+        input_map = simplejson.loads(line)
+        print input_map
+        return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')

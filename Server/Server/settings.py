@@ -18,7 +18,7 @@ DATABASES = {
         'NAME': '/Users/Straider/programming/TDDD27/TDDD27/Server/Server/db/database',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'Straider',
-        'PASSWORD': 'Barbapapa',
+        'PASSWORD': 'Barbapapa2013',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
@@ -98,7 +98,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:

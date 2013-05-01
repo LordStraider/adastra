@@ -29,7 +29,5 @@ urlpatterns = patterns('',
     url(r'^polls/(?P<poll_id>\d+)/vote/$', 'dataManager.views.vote'),
     url(r'^menu/$', 'dataManager.views.menu'),
     url(r'^polls/menu/$', 'dataManager.views.menu'),
-    #url(r'^test_results/$', dataManager.views.test_ajax),
-	#url(r'^test/$', dataManager.views.test),
     url(r'^admin/', include(admin.site.urls)),
 )

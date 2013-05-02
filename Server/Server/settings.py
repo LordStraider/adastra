@@ -75,6 +75,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/Users/Straider/programming/TDDD27/TDDD27/Server/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -82,7 +83,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -92,7 +93,7 @@ SECRET_KEY = 'lowxt5r5a!i9i3@j%xf%!#5xbi13^-4sw4z-*!b-8+1+ih+w#4'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,7 +112,7 @@ ROOT_URLCONF = 'Server.urls'
 WSGI_APPLICATION = 'Server.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates', # Change this to your own directory.
+    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
 )
 
 INSTALLED_APPS = (

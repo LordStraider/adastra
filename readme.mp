@@ -16,7 +16,8 @@ prio 1  Inloggade admins skall kunna modifiera all relevant text på sidan, samt
         bilder i galleriet
 prio 1  Sidan ska känna av när mobiler och surfplattor ansluter och anpassa sidan efter detta
 prio 1  All text och bilder skall länkas till en sqlite3 databas för att enkelt kunna mappa var texten finnes på hemsidan
-prio 2  Besökare ska kunna kommentera sidan, varpå mejl skall skickas till sidansvariga prio 2 Avancerade JQuery menyer, 
-        slide funktionalitet till mobiler
+prio 2  Besökare ska kunna kommentera sidan, varpå mejl skall skickas till sidansvariga 
+prio 2  Avancerade JQuery menyer, 
+prio 3  Slide funktionalitet till mobiler
 prio 3  Sidan skall vara estetiskt tilltalande, enligt mitt tycke
 

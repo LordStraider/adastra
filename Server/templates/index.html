@@ -1,0 +1,27 @@
+<html>
+<head> 
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/dropDown.css" %}">
+<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var site = getSiteString();
+
+        $.getJSON('/siteContent/' + site + '/', function(data) {
+            $('#siteContent').append('<p>' + data.siteContent + '</p>');
+        });
+        
+
+        loadMenu();
+    });
+</script>
+</head>
+<body>
+
+    <div class='center' id='cssmenu'></div>
+    <div class='center' id='siteContent'></div>
+
+</body>
+</html>

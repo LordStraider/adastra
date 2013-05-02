@@ -1,3 +1,6 @@
+#cssmenu {
+  margin-top: 100px;
+}
 #cssmenu ul,
 #cssmenu li,
 #cssmenu span,
@@ -29,7 +32,7 @@
   float: left;
 }
 #cssmenu > ul > li.active a {
-  background: #646464 url(images/grad_dark.png) repeat-x left bottom;
+  /*background: #646464 url(../images/styles/grad_dark.png %}) repeat-x left bottom;*/
   background: -moz-linear-gradient(top, #646464 0%, #4a4a4a 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #646464), color-stop(100%, #4a4a4a));
   background: -webkit-linear-gradient(top, #646464 0%, #4a4a4a 100%);
@@ -56,7 +59,7 @@
   box-shadow: inset 0 0 0 1px #8a8a8a;
   -moz-box-shadow: inset 0 0 0 1px #8a8a8a;
   -webkit-box-shadow: inset 0 0 0 1px #8a8a8a;
-  background: #4a4a4a url(images/grad_dark.png) repeat-x left top;
+  /*background: #4a4a4a url(../images/styles/grad_dark.png %}) repeat-x left top;*/
   background: -moz-linear-gradient(top, #8a8a8a 0%, #707070 50%, #626262 51%, #787878 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8a8a8a), color-stop(50%, #707070), color-stop(51%, #626262), color-stop(100%, #787878));
   background: -webkit-linear-gradient(top, #8a8a8a 0%, #707070 50%, #626262 51%, #787878 100%);
@@ -72,7 +75,7 @@
   filter: none;
 }
 #cssmenu > ul > li a:hover {
-  background: #8a8a8a url(images/grad_dark.png) repeat-x left bottom;
+  /*background: #8a8a8a url(../images/styles/grad_dark.png %}) repeat-x left bottom;*/
   background: -moz-linear-gradient(top, #646464 0%, #4a4a4a 50%, #3b3b3b 51%, #525252 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #646464), color-stop(50%, #4a4a4a), color-stop(51%, #3b3b3b), color-stop(100%, #525252));
   background: -webkit-linear-gradient(top, #646464 0%, #4a4a4a 50%, #3b3b3b 51%, #525252 100%);

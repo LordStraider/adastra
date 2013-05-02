@@ -4,14 +4,17 @@ a:hover {color:#FF0000; text-decoration:underline;}  /* mouse over link */
 a:active {color:#FF0000; text-decoration:underline;}  /* selected link */
 
 body{
-	background-color: #EEEEEE;
+	background-color: #FAFAFA;
 	font-family: "Trebuchet MS, sans-serif";
 	font-size: 13px; 
 }
 
 #siteContent {
+	border-color: #101010;
+	border-radius: 1px;
+	box-shadow: 5px 5px 3px #888888;
 	background-color: #FFFFFF;
-	padding: 10px;
+	padding: 15px;
 	margin-top:10px;
 }
 
@@ -19,4 +22,11 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
+}
+
+#logo {
+	height: 151px;
+	background-image: url('../images/styles/logo.gif');
+	background-repeat:no-repeat;
+	background-size: 100%;
 }

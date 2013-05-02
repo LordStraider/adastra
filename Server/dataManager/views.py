@@ -2,15 +2,31 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from dataManager.models import Menu, DropDown, Content
 from django.utils import simplejson
+from django.conf import settings
 
 
 def index(request, subSite=''):
     return render_to_response('index.html')
 
 
+def album(request, subSite=''):
+    return render_to_response('gallery.html')
+
+
 def siteContent(request, site=''):
     item = Content.objects.get(site=site)
     string = '{"siteContent": "' + item.text + '"}'
+    input_map = simplejson.loads(string, strict=False)
+    return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
+
+
+def fileLoader(request, site=''):
+    string = '['
+    for image in Content.objects.get(site=site).text.split(', '):
+        string += '{"fileLoader": "' + settings.STATIC_URL + 'images/albums/endagistallet/' + image + '"}, '
+    string += 'end'
+    string = string.split(", end")[0] + ']'
+    print string
     input_map = simplejson.loads(string, strict=False)
     return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
 
@@ -28,32 +44,3 @@ def menu(request):
         string = string.split(", end")[0] + ']'
         input_map = simplejson.loads(string)
         return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
-
-
-def gallery(request):
-    return render_to_response('gallery.html')
-
-
-def galleryContent(request):
-    #galleryObj = Gallery.objects.all()
-    #gallery = galleryObj[0]
-    #string = '{"galleryContent": "' + gallery.text + '"}'
-    #input_map = simplejson.loads(string, strict=False)
-    #return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
-    return HttpResponse(simplejson.dumps({"galleryContent": "this is the gallery page."}), mimetype='application/javascript')
-
-
-def about(request):
-    return render_to_response('about.html')
-
-
-def news(request):
-    return render_to_response('news.html')
-
-
-def horses(request):
-    return render_to_response('horses.html')
-
-
-def activity(request, subSite=''):
-    return render_to_response('activity.html')

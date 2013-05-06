@@ -13,7 +13,7 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            site = "edagistallet"
+            site = "stallet"
             filename = request.FILES['file']._get_name()
             path = '%s' % ('static/images/albums/endagistallet/' + filename)
             if not os.path.isfile(path):
@@ -21,7 +21,7 @@ def upload_file(request):
                 a.close()
             save_file(request.FILES['file'], path)
             album = Content.objects.get(site=site)
-            album.text += (", " + filename)
+            album.text += (", " + request.POST['title'] + ":" + filename)
             album.save()
             return render_to_response('index.html', context_instance=RequestContext(request))
     else:
@@ -53,9 +53,9 @@ def siteContent(request, site=''):
 
 def fileLoader(request, site=''):
     imageAlbum = Content.objects.get(site=site).text.split(', ')
-    string = '[{"title": "' + imageAlbum.pop(0) + '"}, '
+    string = '[{"title": "' + imageAlbum.pop(0) + '"}, {"path": "' + settings.STATIC_URL + 'images/albums/endagistallet/"}, '
     for image in imageAlbum:
-        string += '{"fileLoader": "' + settings.STATIC_URL + 'images/albums/endagistallet/' + image + '"}, '
+        string += '{"fileLoader": "' + image + '"}, '
     string += 'end'
     string = string.split(", end")[0] + ']'
     input_map = simplejson.loads(string, strict=False)

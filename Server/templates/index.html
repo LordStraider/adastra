@@ -9,7 +9,21 @@
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/functions.js" %}"></script>
 <script type="text/javascript">
+    var currPic = 0;
+    var numbPic = 0;
+
+    function setPicIndex(x) {
+        if (x >= 0 && x < numbPic) {
+            currPic = x;
+        } else if (x < 0) {
+            currPic = 0;
+        } else if (x == numbPic) {
+            currPic = numbPic-1;
+        }
+    }
+
     $(document).ready(function(){
+        $(document).bind('IssuesReceived', IssuesReceived)
         var prev = '';
         var next = '';
         var curr = '';
@@ -28,10 +42,6 @@
             return false;
         });
 
-        $(".pictureList").live("click", function(e) {
-            changePicture(e.target.src);
-        });
-        
         /*$(window).bind('beforeunload', function(e){
             console.log(e);
             e.preventDefault();
@@ -39,18 +49,36 @@
         });*/
     });
 
-    var upload = function() {
-        var photo = document.getElementById("photo");
-        // the file is the first element in the files property
-        var file = photo.files[0];
-        console.log(file)
-        
+    $(".pictureList").live("click", function(e) {
+        setPicIndex(e.target.id);
+        changePicture(e.target.src);
+    });
+    
+    function IssuesReceived(evt) {
+        numbPic = $(".pictureList li").length;
+    }
 
-        console.log("File name: " + file.name);
-        console.log("File name: " + file.size);
+    $(document).keydown(function(e){
+        if (e.keyCode == 37) { 
+            setPicIndex(currPic-1);
+            $( ".pictureList li img" ).each(function( key ) {
+                if (currPic == $(this).context.id) {
+                    changePicture($(this).context.src, $(this).context.alt);
+                    return false;
+                }
+            });
+        }
 
-        return false;
-    };
+        if (e.keyCode == 39) { 
+            setPicIndex(currPic+1);
+            $( ".pictureList li img" ).each(function( key ) {
+                if (currPic == $(this).context.id) {
+                    changePicture($(this).context.src, $(this).context.alt);
+                    return false;
+                }
+            });
+        }
+    });
 </script>
 </head>
 <body>

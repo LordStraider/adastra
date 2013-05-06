@@ -1,5 +1,5 @@
 # Django settings for Server project.
-import os
+#import os
 import warnings
 import exceptions
 # PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -129,7 +129,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dataManager',
-    'uploadFile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

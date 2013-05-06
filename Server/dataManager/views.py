@@ -1,12 +1,43 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
-from dataManager.models import Menu, DropDown, Content
+from dataManager.models import UploadFileForm, Menu, DropDown, Content
 from django.utils import simplejson
 from django.conf import settings
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_protect
+import os
 
 
-def index(request, subSite=''):
-    return render_to_response('index.html')
+@csrf_protect
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            site = "edagistallet"
+            filename = request.FILES['file']._get_name()
+            path = '%s' % ('static/images/albums/endagistallet/' + filename)
+            if not os.path.isfile(path):
+                a = open(path, 'w')
+                a.close()
+            save_file(request.FILES['file'], path)
+            album = Content.objects.get(site=site)
+            album.text += (", " + filename)
+            album.save()
+            return render_to_response('index.html', context_instance=RequestContext(request))
+    else:
+        form = UploadFileForm()
+    return render(request, 'index.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def save_file(file, path):
+    fd = open(path, 'w+b')
+    for chunk in file.chunks():
+        fd.write(chunk)
+    fd.close()
+
+
+def index(request, site=''):
+    return render_to_response('index.html', context_instance=RequestContext(request))
 
 
 def album(request, subSite=''):
@@ -21,12 +52,12 @@ def siteContent(request, site=''):
 
 
 def fileLoader(request, site=''):
-    string = '['
-    for image in Content.objects.get(site=site).text.split(', '):
+    imageAlbum = Content.objects.get(site=site).text.split(', ')
+    string = '[{"title": "' + imageAlbum.pop(0) + '"}, '
+    for image in imageAlbum:
         string += '{"fileLoader": "' + settings.STATIC_URL + 'images/albums/endagistallet/' + image + '"}, '
     string += 'end'
     string = string.split(", end")[0] + ']'
-    print string
     input_map = simplejson.loads(string, strict=False)
     return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
 
@@ -37,7 +68,10 @@ def menu(request):
         for item in Menu.objects.all():
             string += '{"menu": "' + item.text + '", "subs": ['
             for sub in DropDown.objects.filter(Menu=item):
-                string += '{"sub": "' + sub.text + '", "linked": "' + sub.link + '"}, '
+                string += '{"sub": "' + sub.text + '", "linked": "' + sub.link
+                if sub.hasFiles:
+                    string += '/fileLoader'
+                string += '"}, '
             string += 'end'
             string = string.split(", end")[0].split("end")[0] + '], "linked": "' + item.link + '"}, '
         string += 'end'

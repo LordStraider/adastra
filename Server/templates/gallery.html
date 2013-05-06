@@ -2,35 +2,52 @@
 <head> 
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/gallery.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/dropDown.css" %}">
-<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		var site = getSiteString();
+    var active = '';
+    $(document).ready(function(){
+        var site = getSiteString();
 
         $.getJSON('/fileLoader/' + site + '/', function(data) {
-        	var content = [];
+            var content = ['</div><ul class="pictureList">'];
 
-	        $.each (data, function (i) {
-	        	var file = data[i].fileLoader;
-	        	content.push('<li><img src="' + file + '" alt="' + file + '" height="100" width="100"></li>');
-	        });
+            $.each (data, function (i) {
+                var file = data[i].fileLoader;
+                if (i == 0) {
+                    content.push('<li class="active">');
+                    active = file;
+                } else {
+                    content.push('<li class="inActive">');
+                }
+                content.push('<a href="' + file + '"><img src="' + file + '" alt="' + file + '"></a></li>');
+            });
 
-	        $('<ul/>', {
-	            html: content.join('')
-	        }).appendTo('#siteContent');
-	    });
+            content.push('</ul>');
+
+            $('<div/>', {
+                id:"gallery",
+                html: content.join('')
+            }).appendTo('#siteContent');
+
+            $('<img>', {
+                src: active,
+                alt: active
+            }).appendTo('#picture');
+        });
 
         loadMenu();
-	});
+    });
 </script>
 </head>
 <body>
 
-    <div class='center' id='logo'>&nbsp<div>
+    <div class='center' id='logo'>&nbsp;<div>
     <div class='center' id='cssmenu'></div>
-    <div class='center' id='siteContent'></div>
+    <div class='center' id='siteContent'>
+        <div id="picture"></div></div>
 
 </body>
 </html>

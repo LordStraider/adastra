@@ -25,8 +25,14 @@ body{
 }
 
 #logo {
-	height: 151px;
+	padding-top: 130px;
 	background-image: url('../images/styles/logo.gif');
 	background-repeat:no-repeat;
 	background-size: 100%;
+}
+
+.fake-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
 }

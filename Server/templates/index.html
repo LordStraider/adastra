@@ -2,27 +2,76 @@
 <head> 
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/gallery.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/dropDown.css" %}">
+<script type="text/javascript" src="{% static "java/jquery-1.9.1.min.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
+<script type="text/javascript" src="{% static "java/functions.js" %}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        var site = getSiteString();
+        var prev = '';
+        var next = '';
+        var curr = '';
 
-        $.getJSON('/siteContent/' + site + '/', function(data) {
-            $('#siteContent').append('<p>' + data.siteContent + '</p>');
+        loadContent(getSiteString());
+        loadMenu();
+
+        $("#cssmenu").click(function(e) {
+            e.stopImmediatePropagation();
+            var href = e.srcElement.href.split('/');
+            if (href[href.length - 2] == 'fileLoader') {
+                loadFileContent(href[href.length - 3]);
+            } else {
+                loadContent(href[href.length - 2]);
+            }
+            return false;
+        });
+
+        $(".pictureList").live("click", function(e) {
+            changePicture(e.target.src);
         });
         
-
-        loadMenu();
+        /*$(window).bind('beforeunload', function(e){
+            console.log(e);
+            e.preventDefault();
+            return false;
+        });*/
     });
+
+    var upload = function() {
+        var photo = document.getElementById("photo");
+        // the file is the first element in the files property
+        var file = photo.files[0];
+        console.log(file)
+        
+
+        console.log("File name: " + file.name);
+        console.log("File name: " + file.size);
+
+        return false;
+    };
 </script>
 </head>
 <body>
+    {% block upload %}
 
-    <div class='center' id='logo'>&nbsp<div>
-    <div class='center' id='cssmenu'></div>
-    <div class='center' id='siteContent'></div>
+    <form enctype="multipart/form-data" method="post" action="/upload/">{% csrf_token %}   
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }}: {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Submit" id="Save"/>
+    </form>
+    {% endblock %}
+
+    <div class='center' id='logo'>
+        <div class='center' id='cssmenu'></div>
+    </div>
+
+    <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
 
 </body>
 </html>

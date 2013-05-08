@@ -10,18 +10,16 @@
   float: left;
 }
 
-#active {
-}
-
-#inActive {
-}
-
-#pictureList img {
+.pictureList img {
     height: 75px;
 }
 
+.pictureList {
+    height: 175px;
+}
+
 #picture {
-    height: 400px;
+    height: 450px;
 }
 
 #picture img {

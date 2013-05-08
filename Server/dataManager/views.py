@@ -1,10 +1,12 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
-from dataManager.models import UploadFileForm, Menu, DropDown, Content
+from dataManager.models import UploadFileForm, Menu, DropDown, Content, User
+from django.contrib.auth.views import login as auth_login
 from django.utils import simplejson
 from django.conf import settings
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login
 import os
 
 
@@ -26,7 +28,7 @@ def upload_file(request):
             return render_to_response('index.html', context_instance=RequestContext(request))
     else:
         form = UploadFileForm()
-    return render(request, 'index.html', {'form': form}, context_instance=RequestContext(request))
+    return render(request, 'adminIndex.html', {'form': form}, context_instance=RequestContext(request))
 
 
 def save_file(file, path):
@@ -37,11 +39,21 @@ def save_file(file, path):
 
 
 def index(request, site=''):
-    return render_to_response('index.html', context_instance=RequestContext(request))
+    return render_to_response('index.html')
 
 
-def album(request, subSite=''):
-    return render_to_response('gallery.html')
+@csrf_protect
+def admin_index(request, subSite=''):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        #user = authenticate(username='Admin', password='barbapapa')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return render_to_response('adminIndex.html', context_instance=RequestContext(request))
+    return render_to_response('login.html', context_instance=RequestContext(request))
 
 
 def siteContent(request, site=''):

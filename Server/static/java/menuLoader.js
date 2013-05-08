@@ -22,7 +22,7 @@ function loadMenu() {
 
         $.each (data, function (i) {
             if (data[i].subs.length > 0) {
-                menu.push('<li class="has-sub"><a id="deny" href="/' + data[i].linked + '/">' + data[i].menu + '</a><ul>');
+                menu.push('<li class="has-sub" id="tabs"><a id="deny" href="/' + data[i].linked + '/">' + data[i].menu + '</a><ul>');
 
                 $.each (data[i].subs, function (j) {
                     menu.push('<li><a id="deny" href="/' + data[i].linked + '/' + data[i].subs[j].linked + '/">' + data[i].subs[j].sub + '</a></li>');
@@ -31,7 +31,7 @@ function loadMenu() {
                 menu.push('</ul></li>');
 
             } else {
-                menu.push('<li class="active"><a id="deny" href="/' + data[i].linked + '/">' + data[i].menu + '</a></li>');
+                menu.push('<li><a id="deny" href="/' + data[i].linked + '/">' + data[i].menu + '</a></li>');
             }
         });
 

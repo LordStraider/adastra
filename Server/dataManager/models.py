@@ -2,6 +2,11 @@ from django.db import models
 from django import forms
 
 
+class User(forms.Form):
+    username = forms.CharField(max_length=30)
+    password = forms.CharField(widget=forms.PasswordInput())
+
+
 class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()

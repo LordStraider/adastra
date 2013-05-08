@@ -31,16 +31,26 @@
         loadContent(getSiteString());
         loadMenu();
 
-        $("#cssmenu").on("click", function(e) {
-            e.stopImmediatePropagation();
-            reloadPage(e);
-            return false;
-        });
+        var prev;
+        $("#cssmenu").click(function(e) {
 
-        $("#cssmenu").on("mouseover", function(e) {
-            e.stopImmediatePropagation();
-            reloadPage(e);
+            conosole.log(e);
+            //e.stopImmediatePropagation();
             return false;
+
+            if (prev !== undefined)
+                prev.removeClass("cssmenu-active");
+            prev = $(e.target.parentElement);
+            prev.addClass("cssmenu-active");
+
+            e.stopImmediatePropagation();
+            return false;
+            var href = e.toElement.href.split('/');
+            if (href[href.length - 2] == 'fileLoader') {
+                loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
+            } else {
+                loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+            }
         });
 
         /*$(window).bind('beforeunload', function(e){
@@ -49,18 +59,14 @@
             return false;
         });*/
     });
+
+    $(".pictureList").on("click", function(e) {
+        setPicIndex(e.target.id);
+        changePicture(e.target.src);
+    });
     
     function setNumbPic(evt) {
         numbPic = $(".pictureList li").length;
-        $(".pictureList li img").on("click", function(e) {
-            setPicIndex(e.target.id);
-            changePicture(e.target.src, e.target.alt);
-        });
-
-        $(".pictureList li img").on("mouseover", function(e) {
-            setPicIndex(parseInt(e.target.id));
-            changePicture(e.target.src, e.target.alt);
-        });
     }
 
     $(document).keydown(function(e){
@@ -87,6 +93,19 @@
 </script>
 </head>
 <body>
+    {% block upload %}
+
+    <form enctype="multipart/form-data" method="post" action="/upload/">{% csrf_token %}   
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }}: {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Submit" id="Save"/>
+    </form>
+    {% endblock %}
+
     <div class='center' id='logo'>
         <div class='center' id='cssmenu'></div>
     </div>

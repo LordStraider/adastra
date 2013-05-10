@@ -1,5 +1,6 @@
 # Django settings for Server project.
 #import os
+
 import warnings
 import exceptions
 # PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -17,7 +18,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/Webmod/www/djangojquerycontroller/Server/Server/db/database',  # Or path to database file if using sqlite3.
+        'NAME': '/home/Webmod/adastra/database',  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -55,7 +56,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''  # os.path.join(PROJECT_ROOT, 'media')
+MEDIA_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/media'  # os.path.join(PROJECT_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -68,7 +69,7 @@ FILE_UPLOAD_PERMISSIONS = 755
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -79,7 +80,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/Webmod/www/djangojquerycontroller/Server/static/',
+    #'/home/Webmod/www/djangojquerycontroller/Server/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -91,6 +92,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'lowxt5r5a!i9i3@j%xf%!#5xbi13^-4sw4z-*!b-8+1+ih+w#4'

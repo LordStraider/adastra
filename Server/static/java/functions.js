@@ -1,18 +1,18 @@
 function loadContent(site){
-    $.getJSON('/siteContent/' + site + '/', function(data) {
+    $.getJSON(site, function(data) {
         $('#siteContent').html('<p>' + data.siteContent + '</p>');
     });
 }
 
 function changePicture(src, alt) {
     if (src !== undefined) {
-        var file = src.split('http://localhost:8000');
-        $('#picture').html('<p>Beskrivning: ' + alt + '</p><img src="' + file[1] + '" alt="' + alt + '">');
+        var file = src.split('http://192.168.1.42');
+        $('#picture').html('<img src="' + file[1] + '" alt="' + alt + '"><p>Beskrivning: ' + alt + '</p>');
     }
 }
 
 function loadFileContent(site){
-    $.getJSON('/fileLoader/' + site + '/', function(data) {
+    $.getJSON(site, function(data) {
         var file = '';
         var title = data.shift().title;
         var content = ['<ul class="pictureList">'];
@@ -27,18 +27,34 @@ function loadFileContent(site){
         });
 
         content.push('</ul>');
-        $('#siteContent').html('<h2>' + title + '</h2><div id="picture"><p>Beskrivning: ' + active[0] + '</p></div>');
+        $('#siteContent').html('<h2>' + title + '</h2><div id="picture"></div>');
 
         $('<div/>', {
             id:"gallery",
             html: content.join('')
         }).appendTo('#siteContent');
 
-        $('<img>', {
-            src: path + active[1],
-            alt: active[0]
-        }).appendTo('#picture');
+        $('#picture').html('<img src="' + path + active[1] + '" alt="' + active[0] + '"><p>Beskrivning: ' + active[0] + '</p>');
 
-        $(document).trigger('IssuesReceived');
+        setNumbPic();
     });
+}
+
+var prev;
+function reloadPage(e) {
+    if (e.toElement.href === undefined) {
+        return false;
+    }
+
+    if (prev !== undefined)
+        prev.removeClass("cssmenu-active");
+    prev = $(e.target.parentElement);
+    prev.addClass("cssmenu-active");
+
+    var href = e.toElement.href.split('/');
+    if (href[href.length - 2] == 'fileLoader') {
+        loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
+    } else {
+        loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+    }
 }

@@ -12,7 +12,7 @@ function replaceAAO(text) {
 function getSiteString() {
     var site = window.location.href.split('/');
     if (site.length <= 4)
-        return "Hem";
+        return "siteContent/Hem";
     return site[site.length - 2];
 }
 

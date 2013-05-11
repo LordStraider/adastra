@@ -40,6 +40,7 @@ function loadFileContent(site){
         setNumbPic();
     });
 }
+
 var prev;
 function reloadPage(e) {
     if (e.toElement.href === undefined) {

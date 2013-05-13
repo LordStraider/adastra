@@ -29,16 +29,14 @@
         var curr = '';
 
         loadContent(getSiteString());
-        loadMenu();
+        loadMenu(false);
 
         $("#cssmenu").on("click", function(e) {
-            e.stopImmediatePropagation();
             reloadPage(e);
             return false;
         });
 
         $("#cssmenu").on("mouseover", function(e) {
-            e.stopImmediatePropagation();
             reloadPage(e);
             return false;
         });

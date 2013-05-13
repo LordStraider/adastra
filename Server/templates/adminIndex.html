@@ -29,27 +29,35 @@
         var curr = '';
 
         loadContent(getSiteString());
-        loadMenu();
+        loadMenu(true);
 
         var prev;
-        $("#cssmenu").click(function(e) {
+        $("#cssmenu").on("click", function(e) {
+            if (e.toElement.href !== undefined) {
+                e.stopImmediatePropagation();
+                
+                var href = e.toElement.href.split('/');
+                if (href[href.length - 2] == 'fileLoader') {
+                    loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
+                } else {
+                    loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+                }
 
-            conosole.log(e);
-            //e.stopImmediatePropagation();
-            return false;
+                return false;
+            }
+        });
+        $("#cssmenu").on("mouseover", function(e) {
+                if (e.toElement.href !== undefined) {
+                e.stopImmediatePropagation();
+                
+                var href = e.toElement.href.split('/');
+                if (href[href.length - 2] == 'fileLoader') {
+                    loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
+                } else {
+                    loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+                }
 
-            if (prev !== undefined)
-                prev.removeClass("cssmenu-active");
-            prev = $(e.target.parentElement);
-            prev.addClass("cssmenu-active");
-
-            e.stopImmediatePropagation();
-            return false;
-            var href = e.toElement.href.split('/');
-            if (href[href.length - 2] == 'fileLoader') {
-                loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
-            } else {
-                loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+                return false;
             }
         });
 
@@ -90,21 +98,51 @@
             });
         }
     });
+    
+    function upload(fileForm) {
+        console.log(fileForm.description.value);
+
+    }
+
+    function logout() {
+        console.log("logging out");
+    }
+    
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
 </script>
 </head>
 <body>
-    {% block upload %}
-
-    <form enctype="multipart/form-data" method="post" action="/upload/">{% csrf_token %}   
-    {% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            {{ field.label_tag }}: {{ field }}
-        </div>
-    {% endfor %}
-    <input type="submit" value="Submit" id="Save"/>
+    <form id="file" action="javascript:upload(file)">
+        <input type="text" value="Description" name="description"/>
+        <input type="submit" value="Upload"/>
     </form>
-    {% endblock %}
+
+    <form action="javascript:logout()">
+        <input type="submit" value="Logout"/></form>
+    </form>
 
     <div class='center' id='logo'>
         <div class='center' id='cssmenu'></div>

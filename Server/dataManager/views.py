@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
-from dataManager.models import UploadFileForm, Menu, DropDown, Content, User
+from dataManager.models import UploadFileForm, Menu, DropDown, Content
 from django.contrib.auth.views import login as auth_login
 from django.utils import simplejson
 from django.conf import settings
@@ -43,7 +43,7 @@ def index(request, site=''):
 
 
 @csrf_protect
-def admin_index(request, subSite=''):
+def admin_index(request, site=''):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -56,16 +56,49 @@ def admin_index(request, subSite=''):
     return render_to_response('login.html', context_instance=RequestContext(request))
 
 
+@csrf_protect
+def submitMenu(request):
+    js = simplejson.loads(request.POST.items()[0][0])
+    text = js.get('text')
+    link = js.get('link')
+    if js.get('site'):
+        DropDown.create(Menu.objects.get(link=js.get('site')), text, link, False)
+    else:
+        Menu.create(text, link)
+    Content.create(text, link)
+    return HttpResponse(True)
+
+
+@csrf_protect
+def submitContent(request):
+    print request.POST.items()[0][0]
+    js = simplejson.loads(request.POST.items()[0][0])
+    print js
+    text = js.get('text')
+    site = js.get('site')
+    obj = Content.objects.get(site=site)
+    obj.text = text
+    obj.save()
+    return HttpResponse(True)
+
+
 def siteContent(request, site=''):
     item = Content.objects.get(site=site)
-    string = '{"siteContent": "' + item.text + '"}'
+    string = '{"admin": false, "siteContent": "' + item.text + '"}'
+    input_map = simplejson.loads(string, strict=False)
+    return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
+
+
+def siteAdminContent(request, site=''):
+    item = Content.objects.get(site=site)
+    string = '{"admin": true, "siteContent": "' + item.text + '"}'
     input_map = simplejson.loads(string, strict=False)
     return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
 
 
 def fileLoader(request, site=''):
     imageAlbum = Content.objects.get(site=site).text.split(', ')
-    string = '[{"title": "' + imageAlbum.pop(0) + '"}, {"path": "' + settings.STATIC_URL + 'images/albums/endagistallet/"}, '
+    string = '[{"title": "' + imageAlbum.pop(0) + '"}, {"path": "' + settings.STATIC_URL + 'images/albums/endagtallet/"}, '
     for image in imageAlbum:
         string += '{"fileLoader": "' + image + '"}, '
     string += 'end'

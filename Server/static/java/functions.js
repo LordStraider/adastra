@@ -1,7 +1,34 @@
+function submitText(form) {
+    var text = form.newText.value.replace(/\r\n|\r|\n/g,"\\r\\n");
+    var site = form.site.value;
+    var isAlbum = form.isAlbum.checked;
+    console.log(text);
+    $.ajax({
+        type: "POST",
+        url: "submitContent/",
+        data: '{"text": "' + text + '", "site": "' + site + '", "isAlbum": ' + isAlbum + '}',
+
+        success: function(result){
+            loadContent(site);
+        }
+    });
+}
+
 function loadContent(site){
-    console.log(site);
     $.getJSON(site, function(data) {
-        $('#siteContent').html('<p>' + data.siteContent + '</p>');
+        var content = [''];
+        if (data.admin) {
+            var subSite = site.split('/');
+            content.push('<form id="newSiteContent" action="javascript:submitText(newSiteContent)"><input type="hidden" name="site" value="' + subSite[subSite.length - 2] + '"/><textarea cols="100" rows="' + data.siteContent.length / 100 + '" name="newText">' + data.siteContent + '</textarea><br/>Has pictures: <input type="checkbox" name="hasFiles" value="hasFiles"/><br/>Is it an album: <input type="checkbox" name="isAlbum" value="isAlbum"/><br/><input type="submit" value="Submit"/></form>');
+        } else {
+            content.push('<p>');
+            $(data.siteContent.split('\n')).each(function(key, text) {
+                content.push('<br/>' + text);
+            });
+            content.push('</p>');
+        }
+
+        $('#siteContent').html(content.join(''));
     });
 }
 
@@ -47,6 +74,8 @@ function reloadPage(e) {
         return false;
     }
 
+    e.stopImmediatePropagation();
+    
     if (prev !== undefined)
         prev.removeClass("cssmenu-active");
     prev = $(e.target.parentElement);
@@ -54,8 +83,8 @@ function reloadPage(e) {
 
     var href = e.toElement.href.split('/');
     if (href[href.length - 2] == 'fileLoader') {
-        loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
+        loadFileContent('/fileLoader/' + href[href.length - 3] + '/');
     } else {
-        loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
+        loadContent('/siteContent/' + href[href.length - 2] + '/');
     }
 }

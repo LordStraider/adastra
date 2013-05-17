@@ -32,12 +32,12 @@
         loadMenu(false);
 
         $("#cssmenu").on("click", function(e) {
-            reloadPage(e);
+            reloadPage(e, '', false);
             return false;
         });
 
         $("#cssmenu").on("mouseover", function(e) {
-            reloadPage(e);
+            reloadPage(e, '', false);
             return false;
         });
 
@@ -46,6 +46,17 @@
             e.preventDefault();
             return false;
         });*/
+        var ajax_call = function() {
+            $.getJSON(/checkLoggedIn/, function(data) {
+                if (data['loggedIn']) {
+                    $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName']);
+                }
+            });
+        };
+
+        var interval = 1000 * 5; // where X is your every X minutes
+
+        setInterval(ajax_call, interval);
     });
     
     function setNumbPic(evt) {
@@ -85,8 +96,9 @@
 </script>
 </head>
 <body>
+    <div id="login"><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></div>
     <div class='center' id='logo'>
-        <div class='center' id='cssmenu'></div>
+        <div id='cssmenu'></div>
     </div>
 
     <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>

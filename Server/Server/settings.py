@@ -2,6 +2,9 @@
 #import os
 import warnings
 import exceptions
+#from slugify import slugify
+from django.template.defaultfilters import slugify
+
 # PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 warnings.filterwarnings("ignore", category=exceptions.RuntimeWarning, module='django.db.backends.sqlite3', lineno=50)
 
@@ -103,10 +106,11 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -121,6 +125,11 @@ TEMPLATE_DIRS = (
     '/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'django.contrib.auth.context_processors.auth',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,8 +142,40 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'social_auth',
     'django_evolution',
+    'django.contrib.auth',
+    'django.contrib.sessions',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+DUMMY_FACEBOOK_INFO = {
+    'uid':0,
+    'name':'(Private)',
+    'first_name':'(Private)',
+    'pic_square_with_logo':'http://www.facebook.com/pics/t_silhouette.gif',
+    'affiliations':None,
+    'status':None,
+    'proxied_email':None,
+}
+
+FACEBOOK_APP_ID = '567099146663694'
+FACEBOOK_API_SECRET = 'df6e162a5c89fa99bb6558357ceed4eb'
+SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook')
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
+SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)  # you'll need to import slugify from 'django.template.defaultfilters'
+SOCIAL_AUTH_EXTRA_DATA = False
+SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/login-error/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

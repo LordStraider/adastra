@@ -2,19 +2,30 @@ function submitText(form) {
     var text = form.newText.value.replace(/\r\n|\r|\n/g,"\\r\\n");
     var site = form.site.value;
     var isAlbum = form.isAlbum.checked;
-    console.log(text);
+    var string = '';
+    if (isAlbum) {
+        string = '{"text": "' + text.substring(0,60).replace(',', '&#44;').replace(':', '&#58;') + '", "site": "' + site.replace(',', '&#44;').replace(':', '&#58;') + '", "isAlbum": ' + isAlbum + '}';
+    } else {
+        string = '{"text": "' + text + '", "site": "' + site + '", "isAlbum": ' + isAlbum + '}';
+    }
+    console.log(string);
+
     $.ajax({
         type: "POST",
         url: "submitContent/",
-        data: '{"text": "' + text + '", "site": "' + site + '", "isAlbum": ' + isAlbum + '}',
+        data: string,
 
-        success: function(result){
-            loadContent(site);
+        success: function(result) {
+            if (isAlbum) {
+                adminloadFileContent('/administrationpage/fileLoader/'+site+'/');
+            } else {
+                loadContent('/administrationpage/siteContent/'+site+'/');
+            }
         }
     });
 }
 
-function loadContent(site){
+function loadContent(site) {
     $.getJSON(site, function(data) {
         var content = [''];
         if (data.admin) {
@@ -39,7 +50,7 @@ function changePicture(src, alt) {
     }
 }
 
-function loadFileContent(site){
+function loadFileContent(site) {
     $.getJSON(site, function(data) {
         var file = '';
         var title = data.shift().title;
@@ -68,23 +79,76 @@ function loadFileContent(site){
     });
 }
 
+function submitAlbum(form) {
+    var formData = new FormData($('#newAlbumContent')[0]);
+
+    $.ajax({
+        url: 'upload/',
+        type: 'POST',
+        xhr: function() {
+            var myXhr = $.ajaxSettings.xhr();
+            return myXhr;
+        },
+
+        success: function(data){
+            var json = $.parseJSON(data);
+            if (json['newFile'] === 'True') {
+                var path = json['path'];
+                var file = '';
+                $.each(json['file'].split(', '), function(i, img) {
+                    file = img.split(':')[0];
+                    $('#descriptionlist').append('<li>' + file + ': <input type"text" value="' + file + '" name="file"/><input type="hidden" value="' + file + '" name="file"/><img height="35px" id="' + i + '" src="' + path + file + '" alt="' + file + '">&nbsp;&nbsp;</li>');
+                });
+            }
+        },
+
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+}
+
+function adminloadFileContent(site) {
+    $.getJSON(site, function(data) {
+        var file = '';
+        var title = data.shift().title;
+        var path = data.shift().path;
+        var cnt = 0;
+        var content = ['<form id="newAlbumContent" enctype="multipart/form-data" action="javascript:submitAlbum(newAlbumContent)">Title: <input type="text" name="title" value="' + title + '"/><ul id="descriptionlist">'];
+
+        $.each (data, function (i) {
+            file = data[i].fileLoader.split(':');
+            content.push('<li>' + file[1] + ': <input type"text" value="' + file[0] + '" name="file"/><input type="hidden" value="' + file[1] + '" name="file"/><img height="35px" id="' + i + '" src="' + path + file[1] + '" alt="' + file[0] + '">&nbsp;&nbsp;</li>');
+            cnt++;
+        });
+
+        content.push('</ul><ul><li><p>Add files... <input type="file" name="files[]" class="multiupload" multiple></p></li><li><input type="hidden" value="' + site.split('/')[3] + '" name="site"/><input type="submit" value="Submit"/></li></ul></form>');
+
+        $('#siteContent').html(content.join(''));
+    });
+}
+
 var prev;
-function reloadPage(e) {
-    if (e.toElement.href === undefined) {
+function reloadPage(e, preAdress, loggedIn) {
+    if (e.toElement.href !== undefined) {
+        e.stopImmediatePropagation();
+
+        if (prev !== undefined)
+            prev.removeClass("cssmenu-active");
+        prev = $(e.target.parentElement);
+        prev.addClass("cssmenu-active");
+
+        var href = e.toElement.href.split('/');
+        if (href[href.length - 2] == 'fileLoader') {
+            if (loggedIn) {
+                adminloadFileContent(preAdress + '/fileLoader/' + href[href.length - 3] + '/');
+            } else {
+                loadFileContent('/fileLoader/' + href[href.length - 3] + '/');
+            }
+        } else {
+            loadContent(preAdress + '/siteContent/' + href[href.length - 2] + '/');
+        }
         return false;
-    }
-
-    e.stopImmediatePropagation();
-    
-    if (prev !== undefined)
-        prev.removeClass("cssmenu-active");
-    prev = $(e.target.parentElement);
-    prev.addClass("cssmenu-active");
-
-    var href = e.toElement.href.split('/');
-    if (href[href.length - 2] == 'fileLoader') {
-        loadFileContent('/fileLoader/' + href[href.length - 3] + '/');
-    } else {
-        loadContent('/siteContent/' + href[href.length - 2] + '/');
     }
 }

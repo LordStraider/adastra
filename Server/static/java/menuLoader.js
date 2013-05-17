@@ -28,7 +28,7 @@ function submitSubMenu(subMenu) {
 
         success: function(result){
             if (result) {
-                $('#cssmenu ul li ul').append('<li><a href="/' + site + '/' + link + '/">' + text + '</a></a></li>');
+                $('.' + site).append('<li><a href="/' + site + '/' + link + '/">' + text + '</a></a></li>');
             }
         }
     });
@@ -45,7 +45,7 @@ function submitMenu(menu) {
 
         success: function(result){
             if (result) {
-                $('#cssmenu ul').append('<li><a href="/' + link + '/">' + text + '</a></li>');
+                $('.outer-ul').append('<li><a href="/' + link + '/">' + text + '</a></li>');
             }
         }
     });
@@ -57,12 +57,12 @@ function loadMenu(loggedIn) {
 
         $.each (data, function (i) {
             if (data[i].subs.length > 0) {
-                menu.push('<li class="has-sub" id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
+                menu.push('<li class="has-sub " id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
 
                 /*if (loggedIn) {
                     menu.push('<img ');
                 }*/
-                menu.push('<ul>');
+                menu.push('<ul class="' + data[i].linked + '">');
 
                 $.each (data[i].subs, function (j) {
                     menu.push('<li><a href="/' + data[i].linked + '/' + data[i].subs[j].linked + '/">' + data[i].subs[j].sub + '</a>');
@@ -75,16 +75,17 @@ function loadMenu(loggedIn) {
 
                 if (loggedIn) {
                     id = 'newSubMenu' + i;
-                    menu.push('<li><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')"><input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="New menu"/><input type="submit" value="Add"/></form></li>');
+                    menu.push('<li><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')"><input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="New sub menu"/><input type="submit" value="Add"/></form></li>');
                 }
 
                 menu.push('</ul></li>');
             } else {
-                menu.push('<li><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
-
-                /*if (loggedIn) {
-                    menu.push('<img ');
-                }*/
+                if (loggedIn) {
+                    id = 'newSubMenu' + i;
+                    menu.push('<li class="has-sub" id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a><ul class="' + data[i].linked + '"><li><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')"><input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="New sub menu"/><input type="submit" value="Add"/></form></li></ul>');
+                } else {
+                    menu.push('<li><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
+                }
                 menu.push('</li>');
             }
         });
@@ -94,6 +95,7 @@ function loadMenu(loggedIn) {
         }
 
         $('<ul/>', {
+            class: "outer-ul",
             html: menu.join('')
         }).appendTo('#cssmenu');
     });

@@ -5,10 +5,12 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/gallery.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/dropDown.css" %}">
 <script type="text/javascript" src="{% static "java/jquery-1.9.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "java/upclick-min.js" %}"></script>
 <script type="text/javascript" src="{% static "java/jquery-ui.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/functions.js" %}"></script>
+<script type="text/javascript" src="{% static "java/jquery.form.js" %}"></script>
 <script type="text/javascript">
     var currPic = 0;
     var numbPic = 0;
@@ -34,33 +36,14 @@
         var prev;
         $("#cssmenu").on("click", function(e) {
             if (e.toElement.href !== undefined) {
-                e.stopImmediatePropagation();
-                
-                var href = e.toElement.href.split('/');
-                if (href[href.length - 2] == 'fileLoader') {
-                    loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
-                } else {
-                    loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
-                }
-
+                reloadPage(e, '/administrationpage', true);
                 return false;
             }
         });
+
         $("#cssmenu").on("mouseover", function(e) {
-                if (e.toElement.href !== undefined) {
-                e.stopImmediatePropagation();
-                
-                var href = e.toElement.href.split('/');
-                if (href[href.length - 2] == 'fileLoader') {
-                    loadFileContent('/administrationpage/fileLoader/' + href[href.length - 3] + '/');
-                } else {
-                    loadContent('/administrationpage/siteContent/' + href[href.length - 2] + '/');
-                }
-
-                return false;
-            }
+            reloadPage(e, '/administrationpage', true);
         });
-
         /*$(window).bind('beforeunload', function(e){
             console.log(e);
             e.preventDefault();
@@ -98,16 +81,6 @@
             });
         }
     });
-    
-    function upload(fileForm) {
-        console.log(fileForm.description.value);
-
-    }
-
-    function logout() {
-        console.log("logging out");
-    }
-    
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -135,17 +108,10 @@
 </script>
 </head>
 <body>
-    <form id="file" action="javascript:upload(file)">
-        <input type="text" value="Description" name="description"/>
-        <input type="submit" value="Upload"/>
-    </form>
-
-    <form action="javascript:logout()">
-        <input type="submit" value="Logout"/></form>
-    </form>
+    <a href="/">Lämna administrationssidan</a>
 
     <div class='center' id='logo'>
-        <div class='center' id='cssmenu'></div>
+        <div id='cssmenu'></div>
     </div>
 
     <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>

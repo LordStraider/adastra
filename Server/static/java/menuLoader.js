@@ -12,7 +12,7 @@ function createLink(text) {
 function getSiteString() {
     var site = window.location.href.split('/');
     if (site.length <= 4)
-        return "siteContent/Hem";
+        return "/siteContent/Hem";
     return site[site.length - 2];
 }
 
@@ -29,6 +29,7 @@ function submitSubMenu(subMenu) {
         success: function(result){
             if (result) {
                 $('.' + site).append('<li><a href="/' + site + '/' + link + '/">' + text + '</a></a></li>');
+                $( "#menu" ).menu({ position: { my: "left top", at: "top+25" } });
             }
         }
     });
@@ -46,6 +47,7 @@ function submitMenu(menu) {
         success: function(result){
             if (result) {
                 $('.outer-ul').append('<li><a href="/' + link + '/">' + text + '</a></li>');
+                $( "#menu" ).menu({ position: { my: "left top", at: "top+25" } });
             }
         }
     });
@@ -57,7 +59,7 @@ function loadMenu(loggedIn) {
 
         $.each (data, function (i) {
             if (data[i].subs.length > 0) {
-                menu.push('<li class="has-sub " id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
+                menu.push('<li id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
 
                 /*if (loggedIn) {
                     menu.push('<img ');
@@ -75,14 +77,19 @@ function loadMenu(loggedIn) {
 
                 if (loggedIn) {
                     id = 'newSubMenu' + i;
-                    menu.push('<li><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')"><input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="New sub menu"/><input type="submit" value="Add"/></form></li>');
+                    menu.push('<li><a></a><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')">'+
+                        '<input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" '+
+                        'value="New sub menu"/><input type="submit" value="Add"/></form></li>');
                 }
 
                 menu.push('</ul></li>');
             } else {
                 if (loggedIn) {
                     id = 'newSubMenu' + i;
-                    menu.push('<li class="has-sub" id="tabs"><a href="/' + data[i].linked + '/">' + data[i].menu + '</a><ul class="' + data[i].linked + '"><li><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')"><input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="New sub menu"/><input type="submit" value="Add"/></form></li></ul>');
+                    menu.push('<li><a href="/' + data[i].linked + '/">' + data[i].menu + '</a><ul class="' + data[i].linked +
+                        '"><li><a href="deny"><form id="' + id + '" action="javascript:submitSubMenu(' + id + ')">'+
+                        '<input type="hidden" name="site" value="' + data[i].linked + '"/><input type="text" name="menu" value="'+
+                        'New sub menu"/><input type="submit" value="Add"/></form></a></li></ul>');
                 } else {
                     menu.push('<li><a href="/' + data[i].linked + '/">' + data[i].menu + '</a>');
                 }
@@ -91,12 +98,15 @@ function loadMenu(loggedIn) {
         });
 
         if (loggedIn) {
-            menu.push('<li><form id="newMenu" action="javascript:submitMenu(newMenu)"><input type="text" name="menu" value="New menu"/><input type="submit" value="Add"/></form></li>');
+            menu.push('<li><a href="deny"><form id="newMenu" action="javascript:submitMenu(newMenu)"><input type="text" name="menu" '+
+                'value="New menu"/><input type="submit" value="Add"/></form></a></li>');
         }
 
         $('<ul/>', {
-            class: "outer-ul",
+            id: "menu",
             html: menu.join('')
-        }).appendTo('#cssmenu');
+        }).appendTo('#jquerymenu');
+
+        $( "#menu" ).menu({ position: { my: "left top", at: "top+25" } });
     });
 }

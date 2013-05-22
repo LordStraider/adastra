@@ -30,20 +30,48 @@
         var next = '';
         var curr = '';
 
-        loadContent(getSiteString());
+        loadContent('/administrationpage/siteContent/Hem/');
         loadMenu(true);
 
         var prev;
-        $("#cssmenu").on("click", function(e) {
+        $("#jquerymenu").on("click", function(e) {
             if (e.toElement.href !== undefined) {
+                var href = e.toElement.href.split('/');
+                console.log(href);
+                if (href[href.length - 1] == "deny") {
+                    e.stopImmediatePropagation();
+                    console.log("deny");
+                    return false;
+                }
+                reloadPage(e, '/administrationpage', true);
+                return false;
+            } else if (e.toElement.type ==="text" ) {
+
+                console.log(e.parentElement);
+                console.log(e.srcElement);
+                console.log(e);
+                e.stopImmediatePropagation();
+                return false;
+            } else {
+                e.stopImmediatePropagation();
+                return false;
+            }
+            console.log(e.toElement.type);
+        });
+
+        $("#jquerymenu").on("mouseover", function(e) {
+            if (e.toElement.href !== undefined) {
+                var href = e.toElement.href.split('/');
+                if (href[href.length - 1] == "deny") {
+                    e.stopImmediatePropagation();
+                    console.log("deny");
+                    return false;
+                }
                 reloadPage(e, '/administrationpage', true);
                 return false;
             }
         });
 
-        $("#cssmenu").on("mouseover", function(e) {
-            reloadPage(e, '/administrationpage', true);
-        });
         /*$(window).bind('beforeunload', function(e){
             console.log(e);
             e.preventDefault();
@@ -108,11 +136,12 @@
 </script>
 </head>
 <body>
-    <a href="/">Lämna administrationssidan</a>
-
+    
     <div class='center' id='logo'>
-        <div id='cssmenu'></div>
+        <div id="login"><a href="/">Lämna administrationssidan</a></div>
     </div>
+    
+    <div class='center' id='jquerymenu'></div>
 
     <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
 

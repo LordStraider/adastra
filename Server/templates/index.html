@@ -9,6 +9,7 @@
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/functions.js" %}"></script>
+<script type="text/javascript" src="{% static "java/albumslider.js" %}"></script>
 <script type="text/javascript">
     var currPic = 0;
     var numbPic = 0;
@@ -31,14 +32,20 @@
         loadContent(getSiteString());
         loadMenu(false);
 
-        $("#cssmenu").on("click", function(e) {
+        $("#jquerymenu").on("click", function(e) {
             reloadPage(e, '', false);
             return false;
         });
 
-        $("#cssmenu").on("mouseover", function(e) {
+        $("#jquerymenu").on("mouseover", function(e) {
             reloadPage(e, '', false);
             return false;
+        });
+
+        $.getJSON(/checkLoggedIn/, function(data) {
+            if (data['loggedIn']) {
+                $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName']);
+            }
         });
 
         /*$(window).bind('beforeunload', function(e){
@@ -46,27 +53,30 @@
             e.preventDefault();
             return false;
         });*/
+
         var ajax_call = function() {
             $.getJSON(/checkLoggedIn/, function(data) {
                 if (data['loggedIn']) {
                     $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName']);
+                } else {
+                    $('#login').html('<a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a>');
                 }
             });
         };
 
-        var interval = 1000 * 5; // where X is your every X minutes
+        var interval = 1000 * 60 * 10;
 
         setInterval(ajax_call, interval);
     });
     
     function setNumbPic(evt) {
-        numbPic = $(".pictureList li").length;
-        $(".pictureList li img").on("click", function(e) {
+        numbPic = $(".scroll-content img").length;
+        $(".scroll-content img").on("click", function(e) {
             setPicIndex(e.target.id);
             changePicture(e.target.src, e.target.alt);
         });
 
-        $(".pictureList li img").on("mouseover", function(e) {
+        $(".scroll-content img").on("mouseover", function(e) {
             setPicIndex(parseInt(e.target.id));
             changePicture(e.target.src, e.target.alt);
         });
@@ -75,7 +85,7 @@
     $(document).keydown(function(e){
         if (e.keyCode == 37) { 
             setPicIndex(currPic-1);
-            $( ".pictureList li img" ).each(function( key ) {
+            $( ".scroll-content img" ).each(function( key ) {
                 if (currPic == $(this).context.id) {
                     changePicture($(this).context.src, $(this).context.alt);
                     return false;
@@ -85,7 +95,7 @@
 
         if (e.keyCode == 39) { 
             setPicIndex(currPic+1);
-            $( ".pictureList li img" ).each(function( key ) {
+            $( ".scroll-content img" ).each(function( key ) {
                 if (currPic == $(this).context.id) {
                     changePicture($(this).context.src, $(this).context.alt);
                     return false;
@@ -93,13 +103,15 @@
             });
         }
     });
+
 </script>
 </head>
 <body>
-    <div id="login"><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></div>
     <div class='center' id='logo'>
-        <div id='cssmenu'></div>
+        <div id="login"><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></div>
     </div>
+    
+    <div class='center' id='jquerymenu'></div>
 
     <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
 

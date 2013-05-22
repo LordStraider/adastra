@@ -98,7 +98,6 @@ def index(request, site=''):
 
 @csrf_protect
 def admin_index(request, site=''):
-    print request.user.username
     if request.user.username == 'Straider' and request.user.is_authenticated():
         return render_to_response('adminIndex.html', context_instance=RequestContext(request))
     return render_to_response('login.html', context_instance=RequestContext(request))
@@ -150,7 +149,6 @@ def checkLoggedIn(request):
         string = '{"loggedIn": "True", "firstName": "' + request.user.first_name + '", "lastName": "' + request.user.last_name + '"}'
     else:
         string = '{"loggedIn": "False"}'
-    print string
     input_map = simplejson.loads(string, strict=False)
     return HttpResponse(simplejson.dumps(input_map), mimetype='application/javascript')
 

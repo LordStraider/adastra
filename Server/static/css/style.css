@@ -17,6 +17,30 @@ body{
 	padding: 15px;
 }
 
+.mainContent {
+	float: left;
+	width: 100%;
+}
+
+#resizable { width: 150px; height: 150px; padding: 0.5em; }
+#resizable h3 { text-align: center; margin: 0; }
+
+.list {
+    float: left;
+ 	padding: 10px;
+ 	padding-right: 45px;
+}
+
+.image {
+    float: left;
+ 	padding: 10px;
+}
+
+.newList {
+	visibility: hidden;
+	height: 0;
+}
+
 #login { background-color: #ffffff; }
 
 .ui-menu .ui-menu-item {
@@ -49,6 +73,7 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
+ 	height: auto;
 }
 
 #logo {

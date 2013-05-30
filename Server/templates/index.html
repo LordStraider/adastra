@@ -7,13 +7,14 @@
 <script type="text/javascript" src="{% static "java/jquery-1.9.1.min.js" %}"></script>
 <script type="text/javascript" src="{% static "java/jquery-ui.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
-<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/functions.js" %}"></script>
 <script type="text/javascript" src="{% static "java/albumslider.js" %}"></script>
 <script type="text/javascript">
+    //Gallery variables
     var currPic = 0;
     var numbPic = 0;
 
+    //Gallery function
     function setPicIndex(x) {
         if (x >= 0 && x < numbPic) {
             currPic = x;
@@ -29,9 +30,11 @@
         var next = '';
         var curr = '';
 
+        //Load the current site
         loadContent(getSiteString());
         loadMenu(false);
 
+        //Manage menu mouse over and click events, update content
         $("#jquerymenu").on("click", function(e) {
             reloadPage(e, '', false);
             return false;
@@ -42,9 +45,12 @@
             return false;
         });
 
+        //Update info on the user if logged in, check with server if the user is still active
         $.getJSON(/checkLoggedIn/, function(data) {
-            if (data['loggedIn']) {
-                $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName']);
+            if (data['loggedIn'] === "True") {
+                $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName'] + ', <a href="/logout/">Logga ut</a></p>');
+            } else {
+                $('#login').html('<p><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></p>');
             }
         });
 
@@ -54,12 +60,13 @@
             return false;
         });*/
 
+        //Each 10 minutes, check that the user is still active and update
         var ajax_call = function() {
             $.getJSON(/checkLoggedIn/, function(data) {
-                if (data['loggedIn']) {
-                    $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName']);
+                if (data['loggedIn'] === "True") {
+                    $('#login').html('<p>Welcome, ' + data['firstName'] + ' ' + data['lastName'] + ', <a href="/logout/">Logga ut</a></p>');
                 } else {
-                    $('#login').html('<a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a>');
+                    $('#login').html('<p><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></p>');
                 }
             });
         };
@@ -69,6 +76,7 @@
         setInterval(ajax_call, interval);
     });
     
+    //Gallery management function
     function setNumbPic(evt) {
         numbPic = $(".scroll-content img").length;
         $(".scroll-content img").on("click", function(e) {
@@ -82,6 +90,7 @@
         });
     }
 
+    //Control the gallery with left and right keys
     $(document).keydown(function(e){
         if (e.keyCode == 37) { 
             setPicIndex(currPic-1);
@@ -108,12 +117,12 @@
 </head>
 <body>
     <div class='center' id='logo'>
-        <div id="login"><a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a></div>
+        <div id="login"></div>
     </div>
     
     <div class='center' id='jquerymenu'></div>
 
-    <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
+    <div class='center' id='siteContent'><br/>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
 
 </body>
 </html>

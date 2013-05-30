@@ -15,13 +15,14 @@ class UploadFileForm(forms.Form):
 class Menu(models.Model):
     text = models.CharField(max_length=200)
     link = models.CharField(max_length=200)
+    order = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.text
 
     @classmethod
-    def create(cls, text, link):
-        Menu = cls(text=text, link=link)
+    def create(cls, text, link, order):
+        Menu = cls(text=text, link=link, order=order)
         Menu.save()
 
 
@@ -43,6 +44,7 @@ class DropDown(models.Model):
 class Content(models.Model):
     text = models.TextField()
     site = models.CharField(max_length=200)
+    extra = models.TextField(default="")
 
     def __unicode__(self):
         return self.site

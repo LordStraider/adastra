@@ -5,66 +5,41 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/gallery.css" %}">
 <link rel="stylesheet" type="text/css" href="{% static "css/dropDown.css" %}">
 <script type="text/javascript" src="{% static "java/jquery-1.9.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "java/upclick-min.js" %}"></script>
 <script type="text/javascript" src="{% static "java/jquery-ui.js" %}"></script>
 <script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
-<script type="text/javascript" src="{% static "java/menuLoader.js" %}"></script>
 <script type="text/javascript" src="{% static "java/functions.js" %}"></script>
-<script type="text/javascript" src="{% static "java/jquery.form.js" %}"></script>
+<script type="text/javascript" src="{% static "java/admininstration.js" %}"></script>
 <script type="text/javascript">
-    var currPic = 0;
-    var numbPic = 0;
-
-    function setPicIndex(x) {
-        if (x >= 0 && x < numbPic) {
-            currPic = x;
-        } else if (x < 0) {
-            currPic = 0;
-        } else if (x == numbPic) {
-            currPic = numbPic-1;
-        }
-    }
-
     $(document).ready(function(){
         var prev = '';
         var next = '';
         var curr = '';
 
-        loadContent('/administrationpage/siteContent/Hem/');
+        //Load index menu
+        loadAdminContent('/administrationpage/siteContent/Hem/');
         loadMenu(true);
 
+        //If the mouse is dragged over or clicked on a menu, update content
         var prev;
         $("#jquerymenu").on("click", function(e) {
             if (e.toElement.href !== undefined) {
                 var href = e.toElement.href.split('/');
-                console.log(href);
-                if (href[href.length - 1] == "deny") {
+                if (href[href.length - 2] == "manageMenu") {
+                    loadMenuManager();
                     e.stopImmediatePropagation();
-                    console.log("deny");
                     return false;
                 }
                 reloadPage(e, '/administrationpage', true);
                 return false;
-            } else if (e.toElement.type ==="text" ) {
-
-                console.log(e.parentElement);
-                console.log(e.srcElement);
-                console.log(e);
-                e.stopImmediatePropagation();
-                return false;
-            } else {
-                e.stopImmediatePropagation();
-                return false;
             }
-            console.log(e.toElement.type);
         });
 
         $("#jquerymenu").on("mouseover", function(e) {
             if (e.toElement.href !== undefined) {
                 var href = e.toElement.href.split('/');
-                if (href[href.length - 1] == "deny") {
+                if (href[href.length - 2] == "manageMenu") {
+                    loadMenuManager();
                     e.stopImmediatePropagation();
-                    console.log("deny");
                     return false;
                 }
                 reloadPage(e, '/administrationpage', true);
@@ -79,37 +54,7 @@
         });*/
     });
 
-    $(".pictureList").on("click", function(e) {
-        setPicIndex(e.target.id);
-        changePicture(e.target.src);
-    });
-    
-    function setNumbPic(evt) {
-        numbPic = $(".pictureList li").length;
-    }
-
-    $(document).keydown(function(e){
-        if (e.keyCode == 37) { 
-            setPicIndex(currPic-1);
-            $( ".pictureList li img" ).each(function( key ) {
-                if (currPic == $(this).context.id) {
-                    changePicture($(this).context.src, $(this).context.alt);
-                    return false;
-                }
-            });
-        }
-
-        if (e.keyCode == 39) { 
-            setPicIndex(currPic+1);
-            $( ".pictureList li img" ).each(function( key ) {
-                if (currPic == $(this).context.id) {
-                    changePicture($(this).context.src, $(this).context.alt);
-                    return false;
-                }
-            });
-        }
-    });
-
+    //Add authentication cookie before each ajax calls
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             function getCookie(name) {
@@ -136,14 +81,12 @@
 </script>
 </head>
 <body>
-    
     <div class='center' id='logo'>
-        <div id="login"><a href="/">Lämna administrationssidan</a></div>
+        <div id="login"><a href="/">Lämna administrationssidan</a> <a href="/logout/">Logga ut</a></div>
     </div>
     
     <div class='center' id='jquerymenu'></div>
 
-    <div class='center' id='siteContent'>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
-
+    <div class='center' id='siteContent'><br/>Du har en gammal webläsare, för att se denna sida behöver du en modernare webläsare med javascript påslaget, så som:</br><ul><li><a href="http://www.opera.com">Opera</a></li><li><a href="http://www.firefox.com">Firefox</a></li><li><a href="http://www.chrome.com">Chrome</a></li></ul></div>
 </body>
 </html>

@@ -1,49 +1,32 @@
-function submitText(form) {
-    var text = form.newText.value.replace(/\r\n|\r|\n/g,"\\r\\n");
-    var site = form.site.value;
-    var isAlbum = form.isAlbum.checked;
-    var string = '';
-    if (isAlbum) {
-        string = '{"text": "' + text.substring(0,60).replace(',', '&#44;').replace(':', '&#58;') + '", "site": "' + 
-        site.replace(',', '&#44;').replace(':', '&#58;') + '", "isAlbum": ' + isAlbum + '}';
-    } else {
-        string = '{"text": "' + text + '", "site": "' + site + '", "isAlbum": ' + isAlbum + '}';
-    }
-    console.log(string);
-
-    $.ajax({
-        type: "POST",
-        url: "submitContent/",
-        data: string,
-
-        success: function(result) {
-            if (isAlbum) {
-                adminloadFileContent('/administrationpage/fileLoader/'+site+'/');
-            } else {
-                loadContent('/administrationpage/siteContent/'+site+'/');
-            }
-        }
-    });
-}
-
 function loadContent(site) {
     $.getJSON(site, function(data) {
-        var content = [''];
-        if (data.admin) {
-            var subSite = site.split('/');
-            content.push('<form id="newSiteContent" action="javascript:submitText(newSiteContent)">'+
-                '<input type="hidden" name="site" value="' + subSite[subSite.length - 2] + '"/><textarea cols="100" rows="' +
-                 data.siteContent.length / 100 + '" name="newText">' + data.siteContent + '</textarea><br/>Is it an album: '+
-                 '<input type="checkbox" name="isAlbum" value="isAlbum"/><br/><input type="submit" value="Submit"/></form>');
-            //Has pictures: <input type="checkbox" name="hasFiles" value="hasFiles"/><br/>
-        } else {
-            content.push('<p>');
-            $(data.siteContent.split('\n')).each(function(key, text) {
-                content.push('<br/>' + text);
+        var content = ['<br/>'];
+
+        var list = [];
+        var re = [];
+        if (data.extra !== undefined) {
+            $(data.extra.split(',')).each(function(key, text) {
+                var arr = text.split(':');
+                re.push( new RegExp(arr[0], 'g') );
+                if (arr[0].search('List_Linker') !== -1) {
+                    list.push( '<div class="list"><ul><li>' + arr[1].replace(/_-_/g, '</li><li>') +
+                        '</li></ul></div>' );
+                } else {
+                    size = arr[1].split('_-_');
+                    list.push( '<div class="image"><img src="/' + size[0] + '" height="' +
+                        size[1] + '" width="' + size[2] + '"/></div>' );
+                }
             });
-            content.push('</p>');
         }
 
+        $(data.siteContent.split('\n')).each(function(key, text) {
+            $(re).each(function (i, r) {
+                text = text.replace(r,list[i]);
+            });
+            content.push('<br/>' + text);
+        });
+
+        content.push('<div style="clear:both;"></div>');
         $('#siteContent').html(content.join(''));
     });
 }
@@ -66,17 +49,18 @@ function loadFileContent(site) {
 
         $.each (data, function (i) {
             file = data[i].fileLoader.split(':');
-            content.push('<div class="scroll-content-item ui-widget-header"><img id="' + i + '" src="' + path + file[1] + '" alt="' + 
+            content.push('<div class="scroll-content-item ui-widget-header"><img id="' + i + '" src="' + path + file[1] + '" alt="' +
                 file[0] + '">&nbsp;&nbsp;</div>');
             cnt++;
         });
 
 
         content.push('</div><div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div></div>');
+        content.push('<div style="clear:both;"></div>');
         $('#siteContent').html('<h2>' + title + '</h2><div id="picture"></div>');
 
         $('<div/>', {
-            id:"gallery",
+            id:'gallery',
             html: content.join('')
         }).appendTo('#siteContent');
 
@@ -84,62 +68,6 @@ function loadFileContent(site) {
 
         setNumbPic();
         setScrollBar();
-        console.log($('#siteContent').width() - $('.scroll-bar').width() + '   ' + $('#siteContent').width() + '   ' + $('.scroll-bar').width());
-    });
-}
-
-function submitAlbum(form) {
-    var formData = new FormData($('#newAlbumContent')[0]);
-
-    $.ajax({
-        url: 'upload/',
-        type: 'POST',
-        xhr: function() {
-            var myXhr = $.ajaxSettings.xhr();
-            return myXhr;
-        },
-
-        success: function(data){
-            var json = $.parseJSON(data);
-            if (json['newFile'] === 'True') {
-                var path = json['path'];
-                var file = '';
-                $.each(json['file'].split(', '), function(i, img) {
-                    file = img.split(':')[0];
-                    $('#descriptionlist').append('<li>' + file + ': <input type"text" value="' + file + 
-                        '" name="file"/><input type="hidden" value="' + file + '" name="file"/><img height="35px" id="' + i + 
-                        '" src="' + path + file + '" alt="' + file + '">&nbsp;&nbsp;</li>');
-                });
-            }
-        },
-
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-}
-
-function adminloadFileContent(site) {
-    $.getJSON(site, function(data) {
-        var file = '';
-        var title = data.shift().title;
-        var path = data.shift().path;
-        var cnt = 0;
-        var content = ['<form id="newAlbumContent" enctype="multipart/form-data" action="javascript:submitAlbum(newAlbumContent)">'+
-         'Title: <input type="text" name="title" value="' + title + '"/><ul id="descriptionlist">'];
-
-        $.each (data, function (i) {
-            file = data[i].fileLoader.split(':');
-            content.push('<li>' + file[1] + ': <input type"text" value="' + file[0] + '" name="file"/><input type="hidden" value="' +
-             file[1] + '" name="file"/><img height="35px" id="' + i + '" src="' + path + file[1] + '" alt="' + file[0] + '">&nbsp;&nbsp;</li>');
-            cnt++;
-        });
-
-        content.push('</ul><ul><li><p>Add files... <input type="file" name="files[]" class="multiupload" multiple></p></li><li>'+
-            '<input type="hidden" value="' + site.split('/')[3] + '" name="site"/><input type="submit" value="Submit"/></li></ul></form>');
-
-        $('#siteContent').html(content.join(''));
     });
 }
 
@@ -161,7 +89,11 @@ function reloadPage(e, preAdress, loggedIn) {
                 loadFileContent('/fileLoader/' + href[href.length - 3] + '/');
             }
         } else {
-            loadContent(preAdress + '/siteContent/' + href[href.length - 2] + '/');
+            if (loggedIn) {
+                loadAdminContent(preAdress + '/siteContent/' + href[href.length - 2] + '/');
+            } else {
+                loadContent(preAdress + '/siteContent/' + href[href.length - 2] + '/');
+            }
         }
         return false;
     }

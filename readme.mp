@@ -1,8 +1,8 @@
-Projektspecifikation - TDDD27
+Projekt Django - JqueryUI - TDDD27
 Jonathan Karlsson - jonka293 - 890201-1991 30 maj 2013
 
 
-Länk till screencast: 
+Länk till screencast: http://www.youtube.com/watch?v=o1-Xxaq5Fsk
 
 
 Detta projekt är skapat i django, jquery samt jquery ui
@@ -16,6 +16,8 @@ Struktur:
 
 templates:
 Här ligger .html filerna, där skapas all html via javascript med innehåll från djangos databas (sqlite3)
+Det finns två html filer som är av intresse, index.html som är den vanliga vyn som alla har tillgång till
+samt adminindex.html som bara admins har tillgång till, där man kan göra mer saker som att modifera innehållet.
 
 static:
 Här ligger alla filer som används, i form av css, java och bilder. Bilder som användaren laddar upp hamnar i en 
@@ -80,3 +82,14 @@ genom att trycka på "Submit re-ordering"
 
 Går man till en annan sida så ser man ett textfält där man kan ändra den befintliga informationen på sidan. 
 Även här så trycker man på "Submit" för att skicka in sina ändringar.
+
+Övrigt:
+
+Detta är första gången jag gör en såhär avancerad hemsida och har aldrig jobbat med django eller jquery tidigare. Jag 
+är trots detta nöjd med resultatet och detta kommer att leda till en hemsida som ett företag kommer använda sig av. 
+I framtiden kommer nyheter som skrivs in på sidan länkas till facebook och folk kommer att kunna kommentera saker på 
+sidan via facebook, fler features kommer även att komma till.
+
+Jag har lärt mig mycket under kursens gång om hur django fungerar i helhet så väl som jquery men framför allt hur man 
+på ett korrekt sätt skapar hemsidor då jag tidigare bara tittat på php där man i princip tagit första bästa lösning, 
+denna sida anser jag är både tydlig, trevlig och lätt att lägga till funktionalitet.

@@ -77,8 +77,8 @@ body{
 }
 
 #logo {
-	padding-top: 225px;
-	background-image: url('../images/styles/logo.jpg');
+	padding-top: 160px;
+	background-image: url('../images/styles/logo.gif');
 	background-repeat:no-repeat;
 	background-size: 100%;
 }

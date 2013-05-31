@@ -52,4 +52,5 @@ class Content(models.Model):
     @classmethod
     def create(cls, text, site):
         Content = cls(text=text, site=site)
+        Content.extra = ','
         Content.save()

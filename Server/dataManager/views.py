@@ -98,7 +98,10 @@ def uploadImage(request):
 
             obj = Content.objects.get(site=request.POST.get('site'))
             obj.text += link
-            obj.extra += ',' + newString
+            if obj.extra == ',':
+                obj.extra = newString
+            else:
+                obj.extra += ',' + newString
             obj.save()
 
             return HttpResponse(newString)
@@ -153,7 +156,7 @@ def submitMenu(request):  # Updates the database with changes to the menu system
         DropDown.create(Menu.objects.get(link=site), text, link, False)
         Content.create(text, link)
     elif ret:
-        Menu.create(text, link)
+        Menu.create(text, link, False)
         Content.create(text, link)
 
     return HttpResponse(ret)
@@ -176,9 +179,19 @@ def submitContent(request):  # Updates the content of a page.
     obj = Content.objects.get(site=site)
     obj.text = text
 
+    newString = ''
     if js.get('extra'):
         for string in js.get('extra').items():
-            obj.extra = obj.extra[:-1] + ',' + string[0] + ':' + string[1]  # Manager for pictures and lists
+            newString = newString + ',' + string[0] + ':' + string[1]  # Manager for pictures and lists
+
+        print obj.extra
+        if obj.extra == ',':
+            print 'true'
+            print newString[1:]
+            obj.extra = newString[1:]
+        else:
+            print 'false'
+            obj.extra += ',' + newString
     obj.save()
     return HttpResponse(True)
 
@@ -289,7 +302,7 @@ def checkLoggedIn(request):  # confirm that the user is still active.
 def siteContent(request, site=''):  # returns  the site content in json form
     item = Content.objects.get(site=site)
     string = '{"admin": false, "siteContent": "' + item.text
-    if item.extra not in ['""'] and item.extra:
+    if item.extra not in [','] and item.extra:
         string += '", "extra": "' + item.extra
     string += '"}'
     input_map = simplejson.loads(string, strict=False)
@@ -299,7 +312,7 @@ def siteContent(request, site=''):  # returns  the site content in json form
 def siteAdminContent(request, site=''):  # returns the site content in json form with admin set to true
     item = Content.objects.get(site=site)
     string = '{"admin": true, "siteContent": "' + item.text
-    if item.extra not in ['""'] and item.extra:
+    if item.extra not in [','] and item.extra:
         string += '", "extra": "' + item.extra
     string += '"}'
     input_map = simplejson.loads(string, strict=False)

@@ -12,6 +12,7 @@ function loadContent(site) {
                     list.push( '<div class="list"><ul><li>' + arr[1].replace(/_-_/g, '</li><li>') +
                         '</li></ul></div>' );
                 } else {
+                    console.log(arr[1]);
                     size = arr[1].split('_-_');
                     list.push( '<div class="image"><img src="/' + size[0] + '" height="' +
                         size[1] + '" width="' + size[2] + '"/></div>' );

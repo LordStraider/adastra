@@ -29,8 +29,8 @@ def uploadFiles(request):
         if request.is_ajax():
             newString = ''  # This variable is going to contain json string for the object in the database.
             site = request.POST.get('site')
-            albumpath = 'static/images/albums/' + site + '/'
-
+            albumpath = settings.STATIC_ROOT + 'static/images/albums/' + site + '/'
+            print albumpath
             if not os.path.exists(albumpath):  # Check if the path exist, otherwise create it
                 os.makedirs(albumpath)
 
@@ -85,7 +85,7 @@ def uploadImage(request):
 
     if request.method == 'POST':
         if request.is_ajax():
-            albumpath = 'static/images/contentImages/'
+            albumpath = settings.STATIC_URL + '/images/contentImages/'
             link = request.POST.get('link')
             file = request.FILES.getlist('file')[0]
             path = albumpath + file.name

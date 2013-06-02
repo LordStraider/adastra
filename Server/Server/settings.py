@@ -16,12 +16,13 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+#'NAME': '/Users/Straider/programming/TDDD27/TDDD27/Server/Server/db/database',  # Or path to database file if using sqlite3.
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': '/home/Webmod/www/djangojquerycontroller/Server/Server/db/database',  # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
+         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
@@ -71,8 +72,8 @@ FILE_UPLOAD_PERMISSIONS = 755
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-#STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
-STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
+#STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -124,10 +125,8 @@ WSGI_APPLICATION = 'Server.wsgi.application'
 
 TEMPLATE_DIRS = (
     '/home/Webmod/www/djangojquerycontroller/Server/templates',
+    #'/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
 )
-#TEMPLATE_DIRS = (
-#    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
-#)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'social_auth.context_processors.social_auth_by_type_backends',

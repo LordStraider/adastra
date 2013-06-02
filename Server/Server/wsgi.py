@@ -1,10 +1,13 @@
 import sys, os
-print  >>sys.stderr, "hej from wsgi.py"
-sys.path.append('/home/Wedmod/www/djangojquerycontroller/Server')
+
+sys.path.append('/home/Webmod/www/djangojquerycontroller/Server')
+
+os.environ["DJANGO_SETTINGS_MODULE"]="Server.settings"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Server.settings")
-print >>sys.stderr, 'path: '
-print >>sys.stderr, sys.path
-print >>sys.stderr, '   end of path!   '
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler( )
+
+#import django.core.handlers.wsgi
+#application = django.core.handlers.wsgi.WSGIHandler( )
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
 

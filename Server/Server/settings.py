@@ -1,8 +1,10 @@
 # Django settings for Server project.
 #import os
-
 import warnings
 import exceptions
+#from slugify import slugify
+from django.template.defaultfilters import slugify
+
 # PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 warnings.filterwarnings("ignore", category=exceptions.RuntimeWarning, module='django.db.backends.sqlite3', lineno=50)
 
@@ -10,7 +12,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Jonathan Karlsson', 'jonathan.s.karlssom@gmail.com'),
+    ('Jonathan Karlsson', 'jonathan.s.karlssom@gmail.com')
 )
 
 MANAGERS = ADMINS
@@ -56,7 +58,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/media'  # os.path.join(PROJECT_ROOT, 'media')
+MEDIA_ROOT = ''  # os.path.join(PROJECT_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -69,6 +71,7 @@ FILE_UPLOAD_PERMISSIONS = 755
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
+#STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
 STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for static files.
@@ -80,7 +83,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    #'/home/Webmod/www/djangojquerycontroller/Server/static/',
+    #'/Users/Straider/programming/TDDD27/TDDD27/Server/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -93,8 +96,6 @@ STATICFILES_FINDERS = (
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-ADMIN_MEDIA_PREFIX = '/admin_media/'
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'lowxt5r5a!i9i3@j%xf%!#5xbi13^-4sw4z-*!b-8+1+ih+w#4'
 
@@ -106,10 +107,11 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -122,6 +124,14 @@ WSGI_APPLICATION = 'Server.wsgi.application'
 
 TEMPLATE_DIRS = (
     '/home/Webmod/www/djangojquerycontroller/Server/templates',
+)
+#TEMPLATE_DIRS = (
+#    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
+#)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'django.contrib.auth.context_processors.auth',
 )
 
 INSTALLED_APPS = (
@@ -136,8 +146,40 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'social_auth',
     'django_evolution',
+    'django.contrib.auth',
+    'django.contrib.sessions',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+DUMMY_FACEBOOK_INFO = {
+    'uid':0,
+    'name':'(Private)',
+    'first_name':'(Private)',
+    'pic_square_with_logo':'http://www.facebook.com/pics/t_silhouette.gif',
+    'affiliations':None,
+    'status':None,
+    'proxied_email':None,
+}
+
+FACEBOOK_APP_ID = '567099146663694'
+FACEBOOK_API_SECRET = 'df6e162a5c89fa99bb6558357ceed4eb'
+SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook')
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
+SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)  # you'll need to import slugify from 'django.template.defaultfilters'
+SOCIAL_AUTH_EXTRA_DATA = False
+SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/login-error/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

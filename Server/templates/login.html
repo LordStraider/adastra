@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
     <script type="text/javascript" src="{% static "java/jquery-1.9.1.min.js" %}"></script>
     <script type="text/javascript">
+        //Contact facebook to login
         $('#loginform').submit(function(e){
             $.ajax({
                 type:"POST",
@@ -21,24 +22,7 @@
 <body>
 
     <div class='center' id='siteContent'>
-        
-        {% block content %}
-
-            {% if form.errors %}
-                <p class="error">Sorry, that's not a valid username or password</p>
-            {% endif %}
-
-            <form action="" method="post">{% csrf_token %} 
-                <label for="username">User name:</label>
-                <input type="text" name="username" value="" id="username">
-                <label for="password">Password:</label>
-                <input type="password" name="password" value="" id="password">
-
-                <input type="submit" value="login" />
-                <input type="hidden" name="next" value="{{ next|escape }}" />
-            </form>
-
-        {% endblock %}
+        <a href="{% url "socialauth_begin" "facebook" %}">Logga in med the Facebook</a>
     </div>
 </body>
 </html>

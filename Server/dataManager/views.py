@@ -184,14 +184,10 @@ def submitContent(request):  # Updates the content of a page.
         for string in js.get('extra').items():
             newString = newString + ',' + string[0] + ':' + string[1]  # Manager for pictures and lists
 
-        print obj.extra
         if obj.extra == ',':
-            print 'true'
-            print newString[1:]
             obj.extra = newString[1:]
         else:
-            print 'false'
-            obj.extra += ',' + newString
+            obj.extra += newString
     obj.save()
     return HttpResponse(True)
 
@@ -216,11 +212,8 @@ def setSize(request):  # Changes the size of a picture on a site
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     arr = request.POST.items()[0][0].split(', ')
-    print arr
-    print request.POST.items()[0][0]
     site = arr[0]
     change = arr[1].split(':')
-    print change
     string = ''
 
     obj = Content.objects.get(site=site)  # Get object, iterate to find picture, update and save.
@@ -228,10 +221,8 @@ def setSize(request):  # Changes the size of a picture on a site
         var = extra.split(':')
         string += var[0]
         if var[0] == change[0]:
-            print change[1]
             string += ':' + change[1] + ','
         else:
-            print var[0] + " != " + change[0]
             string += ':' + var[1] + ','
     obj.extra = string[:-1]
     obj.save()

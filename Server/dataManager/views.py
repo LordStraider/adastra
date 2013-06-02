@@ -29,8 +29,9 @@ def uploadFiles(request):
         if request.is_ajax():
             newString = ''  # This variable is going to contain json string for the object in the database.
             site = request.POST.get('site')
-            albumpath = settings.STATIC_ROOT + 'static/images/albums/' + site + '/'
-            print albumpath
+            albumpath = settings.STATIC_ROOT + '/images/albums/' + site + '/'
+            #albumpath = 'static/albums/' + site + '/'            
+
             if not os.path.exists(albumpath):  # Check if the path exist, otherwise create it
                 os.makedirs(albumpath)
 
@@ -66,7 +67,7 @@ def uploadFiles(request):
             obj.save()
 
             if newString != '':
-                json = '{"newFile": "True", "path": "/' + albumpath + '", "file": "' + newString + '"}'
+                json = '{"newFile": "True", "path": "/static/images/albums/' + site + '/", "file": "' + newString + '"}'
             else:
                 json = '{"newFile": "False"}'
 

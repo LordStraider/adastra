@@ -72,8 +72,8 @@ FILE_UPLOAD_PERMISSIONS = 755
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
-#STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
+#STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -175,9 +175,8 @@ SOCIAL_AUTH_DEFAULT_USERNAME = lambda u: slugify(u)  # you'll need to import slu
 SOCIAL_AUTH_EXTRA_DATA = False
 SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
 
-
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/index'
 LOGIN_ERROR_URL = '/login-error/'
 
 # A sample logging configuration. The only tangible logging

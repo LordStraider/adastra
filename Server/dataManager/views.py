@@ -19,7 +19,7 @@ def uploadFiles(request):
     is logged in, and then checks for correct request, then open/create the map for the file and write
     each file's content.
     """
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
     import re
 
@@ -81,7 +81,7 @@ def uploadImage(request):
     """
     Uploads a single file to be used on a specific site.
     """
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     if request.method == 'POST':
@@ -116,14 +116,14 @@ def index(request, site=''):  # Loads the index template, all subsites are route
 
 @csrf_protect
 def admin_index(request, site=''):  # Checks for authentication and then gives access to admin site
-    if request.user.is_authenticated() and request.user.is_staff():
+    if request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('adminIndex.html', context_instance=RequestContext(request))
     return render_to_response('login.html', context_instance=RequestContext(request))
 
 
 @csrf_protect
 def submitMenu(request):  # Updates the database with changes to the menu system
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     js = simplejson.loads(request.POST.items()[0][0])  # Read ajax data
@@ -165,7 +165,7 @@ def submitMenu(request):  # Updates the database with changes to the menu system
 
 @csrf_protect
 def submitContent(request):  # Updates the content of a page.
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     js = simplejson.loads(request.POST.items()[0][0])  # Read ajax data
@@ -195,7 +195,7 @@ def submitContent(request):  # Updates the content of a page.
 
 @csrf_protect
 def reorder(request):  # Reorders the menu list.
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     i = 0
@@ -209,7 +209,7 @@ def reorder(request):  # Reorders the menu list.
 
 @csrf_protect
 def setSize(request):  # Changes the size of a picture on a site
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     arr = request.POST.items()[0][0].split(', ')
@@ -232,7 +232,7 @@ def setSize(request):  # Changes the size of a picture on a site
 
 @csrf_protect
 def removeMenu(request):  # Removes menus from the database.
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     data = simplejson.loads(request.POST.items()[0][0]).get('data').split(':')
@@ -257,7 +257,7 @@ def removeMenu(request):  # Removes menus from the database.
 
 @csrf_protect
 def removeFromAlbum(request):  # remove a picture from an album.
-    if not request.user.is_authenticated() and request.user.is_staff():
+    if not request.user.is_authenticated() and request.user.is_staff:
         return render_to_response('login.html', context_instance=RequestContext(request))
 
     data = simplejson.loads(request.POST.items()[0][0])

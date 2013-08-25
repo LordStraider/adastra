@@ -196,14 +196,24 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
+            'include_html': True,
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'logfile': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/django/jquery.log'
         }
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['logfile'],
             'level': 'ERROR',
-            'propagate': True,
+            'propagate': False,
         },
+    },
+    'jquery': {
+        'handlers': ['logfile'],
+        'level': 'WARNING',
+        'propagate': False,
     }
 }

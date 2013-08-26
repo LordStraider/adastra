@@ -1,2 +1,7 @@
 Bin
-Server/*
+Server/Server/*.*
+Server/Server/db/*.*
+Server/static/images/albums/*
+Server/static/admin/*
+Server/static/java/jquery-ui/*
+

@@ -73,7 +73,8 @@ function loadFileContent(site) {
 
 var prev;
 function reloadPage(e, preAdress, loggedIn) {
-    if (e.toElement.href !== undefined) {
+    console.log(e.target.href);
+    if (e.target.href !== undefined) {
         e.stopImmediatePropagation();
 
         if (prev !== undefined)
@@ -81,7 +82,7 @@ function reloadPage(e, preAdress, loggedIn) {
         prev = $(e.target.parentElement);
         prev.addClass("cssmenu-active");
 
-        var href = e.toElement.href.split('/');
+        var href = e.target.href.split('/');
         if (href[href.length - 2] == 'fileLoader') {
             if (loggedIn) {
                 adminloadFileContent(preAdress + '/fileLoader/' + href[href.length - 3] + '/');

@@ -6,7 +6,7 @@ a:active {color:#FF0000; text-decoration:underline;}  /* selected link */
 body{
 	background-color: #FAFAFA;
 	font-family: "Tangerine, serif";
-	font-size: 14px; 
+	font-size: 14px;
 }
 
 #siteContent {
@@ -41,8 +41,6 @@ body{
 	height: 0;
 }
 
-#login { background-color: #ffffff; }
-
 .ui-menu .ui-menu-item {
     float: left;
     margin: 0;
@@ -72,21 +70,40 @@ body{
 #picture img {
     display: block;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
 }
 
 .center {
+	margin-top: 0;
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
- 	height: auto;
+}
+
+#name {
+	height: 200px;
+	text-shadow: 1px 1px 0 #ffffff, 3px 3px 5px #ffffff;
+}
+
+#name p {
+  	font-size: 50px; 
+	font-weight: bold;
+	padding: 150px 50px 20px;
+}
+
+#login { 
+	text-shadow: 1px 1px 2px #ffffff;
+}
+
+#login p {
+	padding: 0 50px;
 }
 
 #logo {
-	padding-top: 350px;
 	background-image: url('../images/styles/024.jpg');
 	background-repeat:no-repeat;
 	background-size: 100%;
+	height: 250px;
 }
 
 .fake-link {

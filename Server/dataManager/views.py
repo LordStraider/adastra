@@ -29,14 +29,15 @@ def uploadFiles(request):
         if request.is_ajax():
             newString = ''  # This variable is going to contain json string for the object in the database.
             site = request.POST.get('site')
-            albumpath = settings.STATIC_ROOT + '/images/albums/' + site + '/'
-            #albumpath = 'static/albums/' + site + '/'            
+            albumpath = 'static/images/albums/' + site + '/'
+            #albumpath = 'static/albums/' + site + '/'
 
-            if not os.path.exists(albumpath):  # Check if the path exist, otherwise create it
+            if not os.path.isdir(albumpath):  # Check if the path exist, otherwise create it
                 os.makedirs(albumpath)
 
             for file in request.FILES.getlist('files[]'):  # For each file in the request, open/create it and write the content.
                 path = '%s' % (albumpath + re.sub('[%s]' % ''.join(chars), '', file.name))
+                print path
                 destination = open(path, 'w+b')
                 for chunk in file.read():
                     destination.write(chunk)

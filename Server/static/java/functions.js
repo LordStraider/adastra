@@ -32,8 +32,8 @@ function loadContent(site) {
 
 function changePicture(src, alt) {
     if (src !== undefined) {
-        //var file = src.split('http://192.168.1.42');
-        var file = src.split('localhost:8000');
+        var file = src.split('http://192.168.1.42');
+        //var file = src.split('localhost:8000');
         $('#picture').html('<img src="' + file[1] + '" alt="' + alt + '"><p>Beskrivning: ' + alt + '</p>');
     }
 }

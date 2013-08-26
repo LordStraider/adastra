@@ -21,8 +21,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/Users/Straider/programming/TDDD27/TDDD27/Server/Server/db/database',  # Or path to database file if using sqlite3.
-         #'NAME': '/home/Webmod/www/djangojquerycontroller/Server/Server/db/database',  # Or path to database file if using sqlite3.
+        #'NAME': '/Users/Straider/programming/TDDD27/TDDD27/Server/Server/db/database',  # Or path to database file if using sqlite3.
+         'NAME': '/home/Webmod/www/djangojquerycontroller/Server/Server/db/database',  # Or path to database file if using sqlite3.
          # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -73,8 +73,8 @@ FILE_UPLOAD_PERMISSIONS = 755
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
-#STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
+#STATIC_ROOT = ''  # os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = '/home/Webmod/www/djangojquerycontroller/Server/static'  # os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -85,7 +85,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/Straider/programming/TDDD27/TDDD27/Server/static/',
+    #'/Users/Straider/programming/TDDD27/TDDD27/Server/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -125,8 +125,8 @@ ROOT_URLCONF = 'Server.urls'
 WSGI_APPLICATION = 'Server.wsgi.application'
 
 TEMPLATE_DIRS = (
-    #'/home/Webmod/www/djangojquerycontroller/Server/templates',
-    '/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
+    '/home/Webmod/www/djangojquerycontroller/Server/templates',
+    #'/Users/Straider/programming/TDDD27/TDDD27/Server/templates',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

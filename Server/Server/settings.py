@@ -184,6 +184,7 @@ LOGIN_ERROR_URL = '/login-error/'
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -196,24 +197,15 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'include_html': True,
             'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'logfile': {
-            'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/var/log/django/jquery.log'
         }
     },
     'loggers': {
         'django.request': {
-            'handlers': ['logfile'],
+            'handlers': ['mail_admins'],
             'level': 'ERROR',
-            'propagate': False,
+            'propagate': True,
         },
-    },
-    'jquery': {
-        'handlers': ['logfile'],
-        'level': 'WARNING',
-        'propagate': False,
     }
 }
+

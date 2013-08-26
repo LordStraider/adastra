@@ -1,2 +1,5 @@
 Bin
-Server/*
+Server/Server/__init__.pyc
+Server/Server/db/database
+Server/Server/settings.py
+Server/Server/settings.pyc
